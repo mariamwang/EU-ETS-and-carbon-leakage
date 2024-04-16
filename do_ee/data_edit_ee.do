@@ -13,35 +13,8 @@
 	
 	cd "$data"
 	
-	*****This takes a long time to run and the original files are really big, so I just leave it here as a reference and give the dataset this creates:****
+	*****The original data from Comtrade is at HS6 level in multiple large files, so I only add the combined data in ISIC Rev 3 2-digit level here:****
 	
-	/*
-
-	foreach num of numlist 2005/2018 {
-		import delimited "type-C_r-ALL_ps-`num'_freq-A_px-H1.csv", clear
-		keep year tradeflowcode reporteriso partneriso commoditycode qtyunitcode qty netweightkg tradevalueus flag
-		drop if length(commoditycode) < 6
-		save "comtrade_hs1_`num'.dta"
-       }
-	   
-	foreach num of numlist 2000/2018 {
-		use "comtrade_hs1_`num'.dta", clear
-		drop if reporteriso == ""
-		drop if partneriso == ""
-		drop if reporteriso == partneriso
-		rename commoditycode hs1996
-		joinby hs1996 using "hs1996_isic_rev3.dta"
-		collapse (sum) tradevalueus, by(year reporteriso partneriso tradeflowcode isic_rev3)
-		save "comtrade_`num'_isic_rev3.dta", replace
-      }
-	   
-	use "comtrade_2000_isic_rev3.dta", clear
-	foreach num of numlist 2001/2018 {
-		append using "comtrade_`num'_isic_rev3.dta"
-       }	   
-	save "comtrade_isicrev3_2000_2018.dta", replace
-	
-	*/
 	
 *Generate export data for intra-trade calculations
 	

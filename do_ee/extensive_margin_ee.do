@@ -11,53 +11,7 @@
 	
 	cd "$data"
 	
-*****This takes a long time to run and the original files are really big, so I just leave it here as a reference and give the dataset this creates:****
-
-	/*
-	
-	import delimited using "cepii_country_codes.csv", clear
-	rename iso_3digit_alpha iso3
-	rename country_code country
-	keep country iso3
-	save "iso3_cepii.dta", replace
-
-	foreach num of numlist 2000/2018 {
-		import delimited "BACI_HS96/BACI_HS96_Y`num'_V202102.csv", stringcols(4) clear
-		rename t year
-		rename k hs1996
-		rename i exporter
-		rename j importer
-		rename v trade
-		save "BACI_HS96/baci_hs96_`num'.dta", replace
-       }
-	   
-	foreach num of numlist 2000/2018 {
-		use "BACI_HS96/baci_hs96_`num'.dta", clear
-		joinby hs1996 using "hs1996_isic_rev3.dta"
-		bysort year importer exporter isic_rev3: egen total_trade = total(trade)
-		bysort year importer exporter isic_rev3: egen count_trade = count(trade)
-		bysort year importer exporter isic_rev3: gen dup = cond(_N==1,0,_n)
-		drop if dup > 1
-		drop dup
-		save "BACI_HS96/baci_`num'_isic_rev3.dta", replace
-      } 
-	
-	use "BACI_HS96/baci_2000_isic_rev3.dta", clear
-	foreach num of numlist 2001/2018 {
-		append using "BACI_HS96/baci_`num'_isic_rev3.dta"
-       }
-	rename importer country
-	joinby country using "iso3_cepii.dta"
-	drop country
-	rename iso3 importer
-	rename exporter country
-	joinby country using "iso3_cepii.dta"
-	drop country
-	rename iso3 exporter
-	drop if importer==exporter
-	save "baci_isicrev3_2000_2018.dta", replace
-	
-	*/
+*****The original data from BACII is at HS6 level and very large, so I again only add the ISIC Rev 3 2-digit level data here:****
 	
 	use "comtrade_isicrev3_2000_2018_intra_trade_final2.dta", clear
 	keep country
