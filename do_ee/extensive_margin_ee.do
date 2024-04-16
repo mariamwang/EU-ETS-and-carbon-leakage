@@ -20,7 +20,7 @@
 	drop dup
 	save "country_list_cepii.dta", replace
 	
-	use "baci_isicrev3_2000_2018.dta", clear
+	import delimited using "baci_isicrev3_2000_2018.csv", varnames(1) clear
 	rename importer country
 	joinby country using "country_list_cepii.dta"
 	rename country importer

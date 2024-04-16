@@ -18,7 +18,7 @@
 	
 *Generate export data for intra-trade calculations
 	
-	use "comtrade_isicrev3_2000_2018.dta", clear
+	import delimited using "comtrade_isicrev3_2000_2018.csv", varnames(1) clear
 	keep if tradeflowcode == 2
 	drop if partneriso == "WLD"
 	collapse(sum) tradevalueus, by(year reporteriso isic_rev3)
