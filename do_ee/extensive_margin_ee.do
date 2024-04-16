@@ -12,28 +12,8 @@
 	cd "$data"
 	
 *****The original data from BACII is at HS6 level and very large, so I again only add the ISIC Rev 3 2-digit level data here:****
-	
-	use "comtrade_isicrev3_2000_2018_intra_trade_final2.dta", clear
-	keep country
-	bysort country: gen dup = cond(_N==1,0,_n)
-	drop if dup > 1
-	drop dup
-	save "country_list_cepii.dta", replace
-	
+
 	import delimited using "baci_isicrev3_2000_2018.csv", varnames(1) clear
-	rename importer country
-	joinby country using "country_list_cepii.dta"
-	rename country importer
-	rename exporter country
-	joinby country using "country_list_cepii.dta"
-	rename country exporter
-	
-	*Edit ISIC rev. 3 variable
-	
-	rename importer country
-	rename exporter partner
-	drop imports
-	rename total_trade imports
 	
 	bysort partner country year: egen isic_1_5 = total(imports) if inlist(isic_rev3, "01", "02", "05")
 	bysort partner country year: egen isic_1_5_count = total(count_trade) if inlist(isic_rev3, "01", "02", "05")
